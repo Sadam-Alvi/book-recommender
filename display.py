@@ -1,10 +1,7 @@
 import pandas as pd 
 import streamlit as st
 import pickle
-# from PIL import Image
-# import requests
-# from io import BytesIO
-# import streamlit as st
+from importnb import Notebook
 
 
 
@@ -13,11 +10,14 @@ df.dropna(inplace=True)
 
 
 
-# Load similarity matrix
-with open('similarity_matrix.pkl', 'rb') as f:
-    similarity_matrix = pickle.load(f)
 
-# Load CountVectorizer
+
+with Notebook():
+    import app   # without the .ipynb extension
+
+# Now the similarity matrix is available
+similarity_matrix = app.similarity_matrix   
+
 with open('count_vectorizer.pkl', 'rb') as f:
     cv = pickle.load(f)
 
@@ -43,23 +43,12 @@ def recommend(book_title, top_n=6):
     return df[['book_title','author','cover_image_uri']].iloc[book_indices].values.tolist()
 
 
-# import validators
 
-# df['cover_image_uri'] = df['cover_image_uri'].apply(lambda x: x if validators.url(x) else None)
-
-# Select a book
-# df["book_title"] = df["book_title"].apply(lambda x: x.split())
 book = st.selectbox(
     "Select a Book",
     df["book_title"].tolist()
 )
 
-# button = st.button("Recommend Similar books")
-# if button:
-#     recommended_books = recommend(book)
-#     for i,j,k in recommended_books:
-#         st.write(f"{i} by {j}")
-#         st.image(k)
 
 
 
