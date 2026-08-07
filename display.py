@@ -10,7 +10,8 @@ df.dropna(inplace=True)
 
 
 
-
+nltk.download("punkt")
+nltk.download("punkt_tab")
 
 with Notebook():
     import app   # without the .ipynb extension
