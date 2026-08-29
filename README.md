@@ -111,8 +111,8 @@ The `Book_Details.csv` file must contain these columns:
 
 ## 🔧 Technical Details
 
-### Embedding Model: BGE-Small-EN-v1.5
-- Generates 384-dimensional vectors
+### Vectorization: 
+- Convert data into vector
 - Trained on semantic textual similarity tasks
 - Optimized for fast inference with high accuracy
 - Understands context beyond simple keyword matching
