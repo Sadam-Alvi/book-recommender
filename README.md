@@ -7,7 +7,7 @@ An intelligent book recommendation engine built with machine learning that sugge
 This project combines natural language processing and web technology to create a user-friendly book discovery platform. It analyzes book metadata (title, description, genre, author) and finds books with similar characteristics using advanced embedding models.
 
 ### Key Capabilities
-- **Semantic Search**: Uses AI embeddings to understand book meaning, not just keywords
+- **Semantic Search**: Used TDFI vectorizer
 - **Fast Recommendations**: Pre-computed similarity matrix enables instant results
 - **Visual Display**: Shows book covers, authors, and details in an intuitive grid layout
 - **Six Recommendations**: Returns top-6 most similar books for each selection
@@ -21,9 +21,8 @@ This project combines natural language processing and web technology to create a
    - Clean and preprocess text (titles, descriptions, genres, authors)
    - Combine multiple features into a unified "tags" field
 
-2. **Text Embedding** (`app.ipynb`)
-   - Convert text into numerical vectors using **BGE-Small-EN-v1.5** model
-   - Each book becomes a 384-dimensional semantic representation
+2. **Text Vectorization** (`app.ipynb`)
+   - Convert text into numerical vectors using **TfidfVectorizer** model
    - Similar books naturally cluster close together in vector space
 
 3. **Similarity Computation** (`app.ipynb`)

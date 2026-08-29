@@ -4,3 +4,5 @@ importnb
 scikit-learn
 nltk
 sentence-transformers
+gdown
+joblib
