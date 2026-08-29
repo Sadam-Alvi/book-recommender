@@ -3,3 +3,4 @@ streamlit
 importnb
 scikit-learn
 nltk
+sentence-transformers

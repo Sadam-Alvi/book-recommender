@@ -12,35 +12,32 @@ df.dropna(inplace=True)
 nltk.download("punkt")
 nltk.download("punkt_tab")
 
-with Notebook():
-    import app   # without the .ipynb extension
-
-# Now the similarity matrix is available
-similarity_matrix = app.similarity_matrix   
+with open('similarity_matrix.pkl', 'rb') as f:
+    similarity_matrix = pickle.load(f)
 
 with open('count_vectorizer.pkl', 'rb') as f:
     cv = pickle.load(f)
 
 
-movie_index = {book: i for i, book in enumerate(df['book_title'])}
+book_index = {book: i for i, book in enumerate(df['book_title'])}
 
 def recommend(book_title, top_n=6):
-    # Check if movie exists
-    idx = movie_index.get(book_title)
+    # Check if book exists
+    idx = book_index.get(book_title)
     if idx is None:
-        return f"Movie '{book_title}' not found."
+        return f"book '{book_title}' not found."
 
-    # Get similarity scores for this movie
-    sim_scores = list(enumerate(similarity_matrix[idx].toarray()[0]))  # convert sparse row to array
+    # Get similarity scores for this book
+    sim_scores = list(enumerate(similarity_matrix[idx]))  # convert sparse row to array
 
     # Sort by similarity (highest first) and skip itself
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:top_n+1]
 
-    # Get movie indices
+    # Get book indices
     book_indices = [i[0] for i in sim_scores]
 
-    # Return movie names
-    return df[['book_title','author','cover_image_uri']].iloc[book_indices].values.tolist()
+    
+    return df[['book_title','author','cover_image_uri','book_details','authorlink']].iloc[book_indices].values.tolist()
 
 
 
@@ -51,19 +48,35 @@ book = st.selectbox(
 
 
 
-
-if st.button("Recommend Similar books"):
+if st.button("Recommend Similar Books"):
 
     recommended_books = recommend(book)
 
-    cols = st.columns(3)   # 3 columns per row
+    cols = st.columns(3)
 
-    for idx, (title, author, img) in enumerate(recommended_books):
+    for idx, (title, author, img, details, author_link) in enumerate(recommended_books):
 
-        with cols[idx % 3]:   # Move across 3 columns
-            st.text(f"{title} by {author}")
+        with cols[idx % 3]:
+
+            # Book title
+            st.markdown(f"**{title}**")
+
+            # Clickable author name
+            if author_link:
+                st.markdown(
+                    f'<a href="{author_link}" target="_blank">{author}</a>',
+                    unsafe_allow_html=True
+                    )
+            else:
+                st.write(author)
+
+            # Book image
             st.image(img, use_container_width=True)
 
-        # After every 3 books, create a new row
+            # Clickable details section
+            with st.expander("📖 View Details"):
+                st.write(details)
+
+        # Create a new row after every 3 books
         if (idx + 1) % 3 == 0:
             cols = st.columns(3)
