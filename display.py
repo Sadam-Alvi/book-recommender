@@ -13,32 +13,10 @@ df.dropna(inplace=True)
 nltk.download("punkt")
 nltk.download("punkt_tab")
 
-# with open('similarity_matrix.pkl', 'rb') as f:
-#     similarity_matrix = pickle.load(f)
-import gdown
+with open('similarity_matrix.pkl', 'rb') as f:
+    similarity_matrix = pickle.load(f)
 
-@st.cache_resource
-def load_similarity_matrix():
 
-    similarity_path = "similarity_matrix.pkl"
-
-    similarity_file_id = "1tRRHTOVfReKjnHvcnOK4bEgQaz1JeDQr"
-
-    # Download only if not already present
-    if not os.path.exists(similarity_path):
-        gdown.download(
-            f"https://drive.google.com/uc?id={similarity_file_id}",
-            similarity_path,
-            quiet=False
-        )
-
-    similarity_matrix = joblib.load(similarity_path)
-
-    return similarity_matrix
-similarity_matrix = load_similarity_matrix()
-
-# with open('count_vectorizer.pkl', 'rb') as f:
-#     cv = pickle.load(f)
 
 
 book_index = {book: i for i, book in enumerate(df['book_title'])}
