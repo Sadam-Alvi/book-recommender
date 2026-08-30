@@ -37,8 +37,8 @@ def load_similarity_matrix():
     return similarity_matrix
 similarity_matrix = load_similarity_matrix()
 
-with open('count_vectorizer.pkl', 'rb') as f:
-    cv = pickle.load(f)
+# with open('count_vectorizer.pkl', 'rb') as f:
+#     cv = pickle.load(f)
 
 
 book_index = {book: i for i, book in enumerate(df['book_title'])}
@@ -47,19 +47,27 @@ def recommend(book_title, top_n=6):
     # Check if book exists
     idx = book_index.get(book_title)
     if idx is None:
-        return f"book '{book_title}' not found."
+        return f"Book '{book_title}' not found."
 
-    # Get similarity scores for this book
-    sim_scores = list(enumerate(similarity_matrix[idx]))  # convert sparse row to array
+    # ----- Get similarity scores -----
+    # Works for both dense and sparse matrix
+    if hasattr(similarity_matrix, "getrow"):          # sparse
+        row = similarity_matrix.getrow(idx)
+        sim_scores = list(zip(row.indices, row.data))
+    else:                                             # dense
+        sim_scores = list(enumerate(similarity_matrix[idx]))
 
     # Sort by similarity (highest first) and skip itself
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:top_n+1]
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    
+    # Remove the book itself (similarity = 1.0)
+    sim_scores = [score for score in sim_scores if score[0] != idx][:top_n]
 
     # Get book indices
     book_indices = [i[0] for i in sim_scores]
 
-    
-    return df[['book_title','author','cover_image_uri','book_details','authorlink']].iloc[book_indices].values.tolist()
+    # Return the selected columns
+    return df[['book_title', 'author', 'cover_image_uri', 'book_details','authorlink']].iloc[book_indices].values.tolist()
 
 
 

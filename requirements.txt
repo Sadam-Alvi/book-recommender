@@ -6,3 +6,4 @@ nltk
 sentence-transformers
 gdown
 joblib
+scipy
