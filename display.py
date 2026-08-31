@@ -12,6 +12,10 @@ df.dropna(inplace=True)
 
 nltk.download("punkt")
 nltk.download("punkt_tab")
+@st.cache_data
+def get_unique_values():
+    return  df["book_title"].dropna().unique().tolist()
+books = get_unique_values()
 
 with open('similarity_matrix.pkl', 'rb') as f:
     similarity_matrix = pickle.load(f)
@@ -51,7 +55,7 @@ def recommend(book_title, top_n=6):
 
 book = st.selectbox(
     "Select a Book",
-    df["book_title"].tolist()
+    books
 )
 
 
