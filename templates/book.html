@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ book.title }}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='book.css') }}">
+
+</head>
+
+<body>
+
+    <div class="book-page">
+
+        <a href="/" class="back-button">
+            ← Back to Books
+        </a>
+
+
+        <div class="book-details">
+
+            <!-- LEFT: BOOK COVER -->
+
+            <div class="book-image">
+
+                <img
+                    src="{{ book.cover_image_uri }}"
+                    alt="{{ book.title }}"
+                >
+
+            </div>
+
+
+            <!-- RIGHT: DETAILS -->
+
+            <div class="book-info">
+
+                <h1>
+                    {{ book.title }}
+                </h1>
+
+                <p class="author">
+                    <strong>Author:</strong>
+                    <a href="{{ book.authorlink }}" target="_blank">
+                        {{ book.author }}
+                    </a>
+                </p>
+
+                <p class="rating">
+                    ⭐ {{ book.average_rating }}
+                </p>
+
+                <p>
+                    <strong>Genre:</strong>
+                    {{ book.genres }}
+                </p>
+
+                <p>
+                    <strong>Pages:</strong>
+                    {{ book.num_pages }}
+                </p>
+
+                <p>
+                    <strong>Publication:</strong>
+                    {{ book.publication_info }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
