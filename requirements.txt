@@ -7,6 +7,6 @@ sentence-transformers
 gdown
 joblib
 scipy
-fastapi
+fastapi[standard]
 uvicorn
 jinja2
