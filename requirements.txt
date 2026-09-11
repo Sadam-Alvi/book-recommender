@@ -7,3 +7,6 @@ sentence-transformers
 gdown
 joblib
 scipy
+fastapi
+uvicorn
+jinja2

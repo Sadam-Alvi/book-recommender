@@ -1,51 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ book.title }}</title>
+    <title>{{ book.book_title }}</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', path='book.css') }}">
-
 </head>
 
 <body>
 
     <div class="book-page">
 
-        <a href="/" class="back-button">
-            ← Back to Books
-        </a>
-
+        <a href="/" class="back-button">← Back to Books</a>
 
         <div class="book-details">
 
-            <!-- LEFT: BOOK COVER -->
-
+            <!-- Cover -->
             <div class="book-image">
-
-                <img
-                    src="{{ book.cover_image_uri }}"
-                    alt="{{ book.title }}"
-                >
-
+                <img src="{{ book.cover_image_uri }}"
+                     alt="{{ book.title }}">
             </div>
 
-
-            <!-- RIGHT: DETAILS -->
-
+            <!-- Details -->
             <div class="book-info">
 
-                <h1>
-                    {{ book.title }}
-                </h1>
+                <h1>{{ book.title }}</h1>
 
-                <p class="author">
+                <p>
                     <strong>Author:</strong>
                     <a href="{{ book.authorlink }}" target="_blank">
                         {{ book.author }}
@@ -71,12 +57,47 @@
                     {{ book.publication_info }}
                 </p>
 
+                {% if book.book_details %}
+                <div class="description">
+                    <h2>Description</h2>
+                    <p>{{ book.book_details }}</p>
+                </div>
+                {% endif %}
+
             </div>
 
         </div>
 
     </div>
+    <section class="similar-section">
+
+    <h2>Similar Books</h2>
+
+    <div class="book-grid">
+
+        {% for similar in similar_books %}
+
+        <a href="/book/{{ similar.book_id }}" class="book-card">
+
+            <img
+                src="{{ similar.cover_image_uri }}"
+                alt="{{ similar.book_title }}"
+            >
+
+            <h3>{{ similar.book_title }}</h3>
+
+            <p>{{ similar.author }}</p>
+
+            <p>⭐ {{ similar.average_rating }}</p>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+</section>
 
 </body>
-
 </html>
+
