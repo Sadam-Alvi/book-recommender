@@ -6,7 +6,7 @@ import pickle
 app = FastAPI()
 
 df = pd.read_csv("dataset/Book_Details.csv")
-with open(r"matrix\book_similarity.pkl", "rb") as f:
+with open("matrix/book_similarity.pkl", "rb") as f:
     recommendation_data = pickle.load(f)
 
 similarity_indices = recommendation_data["indices"]
