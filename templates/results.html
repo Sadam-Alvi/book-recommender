@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recommended Books</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='results.css') }}">
+</head>
+
+<body>
+
+<div class="results-page">
+
+    <h1>Highest Rated Books</h1>
+
+    <!-- USER PREFERENCES -->
+    <div class="preferences">
+
+        {% if selected_genres %}
+            <p>
+                <strong>Genres:</strong>
+                {{ selected_genres | join(', ') }}
+            </p>
+        {% endif %}
+
+        {% if author %}
+            <p>
+                <strong>Author:</strong>
+                {{ author }}
+            </p>
+        {% endif %}
+
+        {% if year %}
+            <p>
+                <strong>Year:</strong>
+                {{ year }}
+            </p>
+        {% endif %}
+
+    </div>
+
+    <!-- BOOKS -->
+
+    {% if books %}
+
+        <div class="book-grid">
+
+            {% for book in books %}
+
+                <div class="book-card">
+
+                    <a href="/book/{{ book.book_id }}">
+
+                        <img
+                            src="{{ book.cover_image_uri }}"
+                            alt="{{ book.book_title }}"
+                        >
+
+                    </a>
+
+                    <h2>
+                        {{ book.book_title }}
+                    </h2>
+
+                    <p class="author">
+                        {{ book.author }}
+                    </p>
+
+                    <p>
+                        ⭐ {{ book.average_rating }}
+                    </p>
+
+                    <p>
+                        {{ book.num_reviews }} reviews
+                    </p>
+
+                    <p>
+                        {{ book.year }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="no-books">
+            <h2>No books found</h2>
+            <p>
+                Try selecting different genres, author, or year.
+            </p>
+        </div>
+
+    {% endif %}
+
+
+    <!-- BACK BUTTON -->
+
+    <a href="/" class="back-button">
+        Change Preferences
+    </a>
+
+</div>
+
+</body>
+</html>

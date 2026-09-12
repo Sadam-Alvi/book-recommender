@@ -1,120 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Book Recommender</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', path='style.css') }}">
-
 </head>
 
 <body>
 
-    <!-- SEARCH BAR -->
+<div class="preference-page">
 
-    <form action="/" method="get" class="search-bar">
+    <h1>Find Your Next Book</h1>
 
-        <!-- <form action="/" method="get" class="search-bar"> -->
+    <!-- <p>Tell us what you like and we'll find books for you.</p> -->
 
-    <input
-        type="text"
-        name="search"
-        placeholder="Search for a book..."
-        value="{{ search }}"
-    >
+   <form action="/results" method="get" class="preference-form">
 
-    <select name="genre">
+    <h1>Find Your Next Book</h1>
+    <p class="subtitle">Choose your preferences and we'll find books you'll love.</p>
 
-        <option value="">All Genres</option>
+    <!-- Genres -->
+    <div class="field">
+        <label>Genres</label>
+        <p class="hint">Choose up to 3</p>
 
-        {% for g in genres %}
-
-        <option value="{{ g }}"
-            {% if genre == g %}selected{% endif %}>
-            {{ g }}
-        </option>
-
-        {% endfor %}
-
-    </select>
-
-    <button type="submit">
-        Search
-    </button>
-
-<!-- </form> -->
-
-    </form>
-
-
-    <!-- PAGE HEADING -->
-
-    <h1>Highest Rated Books</h1>
-
-
-    <!-- BOOKS -->
-
-    <div class="book-container">
-
-        {% for book in books %}
-
-        <div class="book-card">
-
-            <img
-                src="{{ book.cover_image_uri }}"
-                alt="{{ book.title }}"
-            >
-
-            <h2>
-                <a href="/book/{{ book.book_id }}">
-                    {{ book.book_title }}
-                </a>
-            </h2>
-
-            <p>
-                ⭐ {{ book.average_rating }}
-            </p>
-
-            <p>
-                {{ (book.genres) }}
-            </p>
-
-            <p>
-                <a
-                    href="{{ book.authorlink }}"
-                    target="_blank"
+        <div class="genre-grid">
+            {% for genre in top_20_genres %}
+            <label class="genre-option">
+                <input
+                    type="checkbox"
+                    name="selected_genres"
+                    value="{{ genre }}"
+                    {% if genre in selected_genres %}checked{% endif %}
                 >
-                    {{ book.author }}
-                </a>
-            </p>
-
+                <span>{{ genre }}</span>
+            </label>
+            {% endfor %}
         </div>
-
-        {% endfor %}
-
     </div>
 
 
-    <!-- LOAD MORE -->
+    <!-- Author -->
+    <div class="field">
+        <label for="author">Author</label>
+        <p class="hint">Start typing to find an author</p>
 
-    {% if has_more %}
+        <input
+            type="text"
+            id="author"
+            name="author"
+            list="author-list"
+            placeholder="Search author..."
+            autocomplete="off"
+            value="{{ author }}"
+        >
 
-    <div class="load-more">
-    <a href="/?offset={{ next_offset }}{% if search %}&search={{ search }}{% endif %}{% if genre %}&genre={{ genre }}{% endif %}#books">
-        Load More
-    </a>
+        <datalist id="author-list">
+            {% for author_name in all_authors %}
+                <option value="{{ author_name }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+
+    <!-- Year -->
+    <div class="field">
+        <label for="year">Publication Year</label>
+
+        <select name="year" id="year">
+            <option value="">Any year</option>
+
+            {% for y in years %}
+                <option
+                    value="{{ y }}"
+                    {% if year == y %}selected{% endif %}
+                >
+                    {{ y }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+    <button type="submit" class="find-button">
+        Find Books →
+    </button>
+
+</form>
+
 </div>
 
-    {% endif %}
-
-
 </body>
-
 </html>
-

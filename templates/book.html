@@ -1,15 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>{{ book.book_title }}</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', path='book.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='book.css') }}">
 </head>
 
 <body>
@@ -23,19 +19,24 @@
             <!-- Cover -->
             <div class="book-image">
                 <img src="{{ book.cover_image_uri }}"
-                     alt="{{ book.title }}">
+                     alt="{{ book.book_title }}"
+                     onerror="this.src='/static/placeholder.jpg'">
             </div>
 
             <!-- Details -->
             <div class="book-info">
 
-                <h1>{{ book.title }}</h1>
+                <h1>{{ book.book_title }}</h1>
 
                 <p>
                     <strong>Author:</strong>
-                    <a href="{{ book.authorlink }}" target="_blank">
+                    {% if book.authorlink %}
+                        <a href="{{ book.authorlink }}" target="_blank">
+                            {{ book.author }}
+                        </a>
+                    {% else %}
                         {{ book.author }}
-                    </a>
+                    {% endif %}
                 </p>
 
                 <p class="rating">
@@ -68,36 +69,25 @@
 
         </div>
 
-    </div>
-    <section class="similar-section">
+        <!-- Similar Books Section -->
+        <section class="similar-section">
+            <h2>Similar Books</h2>
 
-    <h2>Similar Books</h2>
-
-    <div class="book-grid">
-
-        {% for similar in similar_books %}
-
-        <a href="/book/{{ similar.book_id }}" class="book-card">
-
-            <img
-                src="{{ similar.cover_image_uri }}"
-                alt="{{ similar.book_title }}"
-            >
-
-            <h3>{{ similar.book_title }}</h3>
-
-            <p>{{ similar.author }}</p>
-
-            <p>⭐ {{ similar.average_rating }}</p>
-
-        </a>
-
-        {% endfor %}
+            <div class="book-grid">
+                {% for similar in similar_books %}
+                <a href="/book/{{ similar.book_id }}" class="book-card">
+                    <img src="{{ similar.cover_image_uri }}"
+                         alt="{{ similar.book_title }}"
+                         onerror="this.src='/static/placeholder.jpg'">
+                    <h3>{{ similar.book_title }}</h3>
+                    <p>{{ similar.author }}</p>
+                    <p>⭐ {{ similar.average_rating }}</p>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
 
     </div>
-
-</section>
 
 </body>
 </html>
-
